@@ -44,7 +44,6 @@ public class Main {
         Vendor vendor = makeVendingMachine();
 
         testOrderSnack(vendor, coke);
-        testOrderSnack(vendor, cheetos);
     }
 
     private static void runQuantityOutTest() {
