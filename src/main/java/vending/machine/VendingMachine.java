@@ -33,9 +33,9 @@ public class VendingMachine implements Vendor {
     }
 
     @Override
-    public void removeSnackQuantity(String snackName, int quantity) {
+    public void decrementSnackQuantity(String snackName) {
         Snack snack = getSnack(snackName);
-        int newQuantity = Math.max(snack.quantity() - quantity, 0);
+        int newQuantity = Math.max(snack.quantity() - 1, 0);
         Snack updatedSnack = new Snack(snackName, snack.price(), newQuantity);
         removeSnack(snack);
         addSnack(updatedSnack);
@@ -69,5 +69,20 @@ public class VendingMachine implements Vendor {
     @Override
     public void processDispenseRequest() {
         dispenseHandler.handleDispense(this);
+    }
+
+    @Override
+    public void selectSnack(String snackName) {
+        getState().selectSnack(snackName);
+    }
+
+    @Override
+    public double insertMoney(double money) {
+        return getState().insertMoney(money);
+    }
+
+    @Override
+    public void dispenseSnack() {
+        getState().dispenseSnack();
     }
 }
