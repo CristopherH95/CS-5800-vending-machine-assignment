@@ -20,6 +20,11 @@ public class WaitingState implements VendingState {
 
     @Override
     public double insertMoney(double money) {
+        // If desired item is unavailable, then we can reset the state of the vending machine
+        if (isSelectedItemEmpty()) {
+            vendor.setState(new IdleState(vendor));
+            return money;
+        }
         if (canDispenseWithMoney(money)) {
             vendor.setState(new DispensingState(vendor));
             return getChangeForSelected(money);
@@ -32,13 +37,23 @@ public class WaitingState implements VendingState {
         throw new NotReadyException("Cannot dispense snacks until money has been inserted");
     }
 
+    private boolean isSelectedItemEmpty() {
+        Snack selectedSnack = vendor.getSelectedSnack();
+        return selectedSnack.quantity() <= 0;
+    }
+
     private boolean canDispenseWithMoney(double money) {
         Snack selectedSnack = vendor.getSelectedSnack();
-        return selectedSnack.quantity() >= 1 && selectedSnack.price() <= money;
+        return selectedSnack.price() <= money;
     }
 
     private double getChangeForSelected(double money) {
         Snack selectedSnack = vendor.getSelectedSnack();
         return selectedSnack.quantity() - money;
+    }
+
+    @Override
+    public String toString() {
+        return "Waiting...";
     }
 }

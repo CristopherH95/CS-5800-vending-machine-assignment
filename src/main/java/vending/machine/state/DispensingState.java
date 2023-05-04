@@ -26,4 +26,9 @@ public class DispensingState implements VendingState {
         vendor.processDispenseRequest();
         vendor.setState(new IdleState(vendor));
     }
+
+    @Override
+    public String toString() {
+        return "Dispensing...";
+    }
 }
